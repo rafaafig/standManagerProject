@@ -3,12 +3,14 @@ package StandManagerProject.standManager.Controllers;
 import StandManagerProject.standManager.Models.Car;
 import StandManagerProject.standManager.Services.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/cars")
+@RequestMapping("stand/cars")
 public class CarController {
     private final CarService carService;
 
@@ -23,23 +25,27 @@ public class CarController {
     }
 
     @GetMapping("/{id}")
-    public Car getCarById(@PathVariable Long id) {
+    public ResponseEntity<Car> getCarById(@PathVariable Long id) {
         return carService.getCarById(id)
-                .orElseThrow(() -> new RuntimeException("Car not found with id: " + id));
+                .map(car -> ResponseEntity.ok(car))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Car addCar(@RequestBody Car car) {
-        return carService.addCar(car);
+    public ResponseEntity<Car> addCar(@RequestBody Car car) {
+        Car savedCar = carService.addCar(car);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedCar);
     }
 
     @PutMapping("/{id}")
-    public Car updateCar(@PathVariable Long id, @RequestBody Car car) {
-        return carService.updateCar(id, car);
+    public ResponseEntity<Car> updateCar(@PathVariable Long id, @RequestBody Car car) {
+        Car updatedCar = carService.updateCar(id, car);
+        return ResponseEntity.ok(updatedCar);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCar(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteCar(@PathVariable Long id) {
         carService.deleteCar(id);
+        return ResponseEntity.noContent().build();
     }
 }

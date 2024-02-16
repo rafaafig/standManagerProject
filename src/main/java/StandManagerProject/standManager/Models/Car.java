@@ -1,25 +1,54 @@
 package StandManagerProject.standManager.Models;
 
+import StandManagerProject.standManager.Enums.CarEnums;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
-import java.util.Date;
 
 @Entity
 public class Car {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String modelName;
-    private int makeYear;
-    private String color;
-    private double price;
-    private boolean availability;
-    private Date purchaseDate;
-    private Date saleDate;
 
-    @ManyToOne
-    @JoinColumn(name = "stand_id")
-    private Stand stand;
+
+    private String brand;
+
+    private String model;
+
+    @Nullable
+    private int licensePlate;
+
+    @Enumerated(EnumType.STRING)
+    private CarEnums.Traction traction;
+
+    @Enumerated(EnumType.STRING)
+    private CarEnums.Country country;
+
+    @Enumerated(EnumType.STRING)
+    private CarEnums.Seats seats;
+
+    @Enumerated(EnumType.STRING)
+    private CarEnums.Fuel fuel;
+
+    @Enumerated(EnumType.STRING)
+    private CarEnums.Type type;
+
+    @Enumerated(EnumType.STRING)
+    private CarEnums.Doors doors;
+
+    @Enumerated(EnumType.STRING)
+    private CarEnums.Status status;
+
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "seller_id")
+    private Seller seller;
+
+
+    public Car() {
+    }
 
     public Long getId() {
         return id;
@@ -29,59 +58,92 @@ public class Car {
         this.id = id;
     }
 
-    public String getModelName() {
-        return modelName;
+    public String getBrand() {
+        return brand;
     }
 
-    public void setModelName(String modelName) {
-        this.modelName = modelName;
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
-    public int getMakeYear() {
-        return makeYear;
+    public String getModel() {
+        return model;
     }
 
-    public void setMakeYear(int makeYear) {
-        this.makeYear = makeYear;
+    public void setModel(String model) {
+        this.model = model;
     }
 
-    public String getColor() {
-        return color;
+    public int getLicensePlate() {
+        return licensePlate;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setLicensePlate(int licensePlate) {
+        this.licensePlate = licensePlate;
     }
 
-    public double getPrice() {
-        return price;
+    public CarEnums.Traction getTraction() {
+        return traction;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setTraction(CarEnums.Traction traction) {
+        this.traction = traction;
     }
 
-    public boolean isAvailability() {
-        return availability;
+    public CarEnums.Country getCountry() {
+        return country;
     }
 
-    public void setAvailability(boolean availability) {
-        this.availability = availability;
+    public void setCountry(CarEnums.Country country) {
+        this.country = country;
     }
 
-    public Date getPurchaseDate() {
-        return purchaseDate;
+    public CarEnums.Seats getSeats() {
+        return seats;
     }
 
-    public void setPurchaseDate(Date purchaseDate) {
-        this.purchaseDate = purchaseDate;
+    public void setSeats(CarEnums.Seats seats) {
+        this.seats = seats;
     }
 
-    public Date getSaleDate() {
-        return saleDate;
+    public CarEnums.Fuel getFuel() {
+        return fuel;
     }
 
-    public void setSaleDate(Date saleDate) {
-        this.saleDate = saleDate;
+    public void setFuel(CarEnums.Fuel fuel) {
+        this.fuel = fuel;
     }
+
+    public CarEnums.Type getType() {
+        return type;
+    }
+
+    public void setType(CarEnums.Type type) {
+        this.type = type;
+    }
+
+    public CarEnums.Doors getDoors() {
+        return doors;
+    }
+
+    public void setDoors(CarEnums.Doors doors) {
+        this.doors = doors;
+    }
+
+    public CarEnums.Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(CarEnums.Status status) {
+        this.status = status;
+    }
+
+    public Seller getSeller() {
+        return seller;
+    }
+
+    public void setSeller(Seller seller) {
+        this.seller = seller;
+    }
+
 }

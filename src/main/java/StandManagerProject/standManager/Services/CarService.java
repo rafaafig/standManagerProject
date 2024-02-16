@@ -11,43 +11,36 @@ import java.util.Optional;
 @Service
 public class CarService {
 
-    private final CarRepository carRepository;
-
     @Autowired
-    public CarService(CarRepository carRepository) {
-        this.carRepository = carRepository;
-    }
+    private CarRepository carRepository;
+
+
     public List<Car> getAllCars() {
         return carRepository.findAll();
     }
+
 
     public Optional<Car> getCarById(Long id) {
         return carRepository.findById(id);
     }
 
+
     public Car addCar(Car car) {
         return carRepository.save(car);
     }
 
+
     public Car updateCar(Long id, Car updatedCar) {
-        return carRepository.findById(id)
-                .map(car -> {
-                    car.setModelName(updatedCar.getModelName());
-                    car.setMakeYear(updatedCar.getMakeYear());
-                    car.setColor(updatedCar.getColor());
-                    car.setPrice(updatedCar.getPrice());
-                    car.setAvailability(updatedCar.isAvailability());
-                    car.setPurchaseDate(updatedCar.getPurchaseDate());
-                    car.setSaleDate(updatedCar.getSaleDate());
-                    return carRepository.save(car);
-                })
-                .orElseGet(() -> {
-                    updatedCar.setId(id);
-                    return carRepository.save(updatedCar);
-                });
+        if (carRepository.existsById(id)) {
+            updatedCar.setId(id);
+            return carRepository.save(updatedCar);
+        } else {
+            return null;
+        }
     }
 
     public void deleteCar(Long id) {
         carRepository.deleteById(id);
     }
 }
+
