@@ -24,6 +24,7 @@ public class CarController {
         this.carService = carService;
     }
 
+    @GetMapping
     public ResponseEntity<List<EntityModel<Car>>> getAllCars() {
         List<Car> cars = carService.getAllCars();
         List<EntityModel<Car>> carsModels = cars.stream()
