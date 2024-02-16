@@ -1,13 +1,18 @@
 package StandManagerProject.standManager.Controllers;
 
 import StandManagerProject.standManager.Models.Car;
+import StandManagerProject.standManager.Models.Seller;
 import StandManagerProject.standManager.Services.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("stand/cars")
@@ -19,28 +24,46 @@ public class CarController {
         this.carService = carService;
     }
 
-    @GetMapping
-    public List<Car> getAllCars() {
-        return carService.getAllCars();
+    public ResponseEntity<List<EntityModel<Car>>> getAllCars() {
+        List<Car> cars = carService.getAllCars();
+        List<EntityModel<Car>> carsModels = cars.stream()
+                .map(car -> EntityModel.of(car,
+                        linkTo(methodOn(CarController.class).getCarById(car.getId())).withSelfRel(),
+                        linkTo(methodOn(CarController.class).updateCar(car.getId(), car)).withRel("update"),
+                        linkTo(methodOn(CarController.class).deleteCar(car.getId())).withRel("delete")))
+                .toList();
+        return ResponseEntity.ok(carsModels);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Car> getCarById(@PathVariable Long id) {
+    public ResponseEntity<EntityModel<Car>> getCarById(@PathVariable Long id) {
         return carService.getCarById(id)
-                .map(car -> ResponseEntity.ok(car))
+                .map(car -> {
+                    EntityModel<Car> model = EntityModel.of(car,
+                            linkTo(methodOn(CarController.class).getCarById(id)).withSelfRel(),
+                            linkTo(methodOn(CarController.class).updateCar(id, car)).withRel("update"),
+                            linkTo(methodOn(CarController.class).deleteCar(id)).withRel("delete"));
+                    return ResponseEntity.ok(model);
+                })
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Car> addCar(@RequestBody Car car) {
+    public ResponseEntity<EntityModel<Car>> addCar(@RequestBody Car car) {
         Car savedCar = carService.addCar(car);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedCar);
+        EntityModel<Car> model = EntityModel.of(savedCar,
+                linkTo(methodOn(CarController.class).getCarById(savedCar.getId())).withSelfRel());
+        return ResponseEntity.status(HttpStatus.CREATED).body(model);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Car> updateCar(@PathVariable Long id, @RequestBody Car car) {
+    public ResponseEntity<EntityModel<Car>> updateCar(@PathVariable Long id, @RequestBody Car car) {
         Car updatedCar = carService.updateCar(id, car);
-        return ResponseEntity.ok(updatedCar);
+        EntityModel<Car> model = EntityModel.of(updatedCar,
+                linkTo(methodOn(CarController.class).getCarById(id)).withSelfRel(),
+                linkTo(methodOn(CarController.class).updateCar(id, car)).withRel("update"),
+                linkTo(methodOn(CarController.class).deleteCar(id)).withRel("delete"));
+        return ResponseEntity.ok(model);
     }
 
     @DeleteMapping("/{id}")
