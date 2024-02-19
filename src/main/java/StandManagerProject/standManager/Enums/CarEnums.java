@@ -27,7 +27,7 @@ public class CarEnums {
     }
 
     public enum Status {
-        UNKNOWN, BOUGHT_ARRIVING, IN_STOCK, PROMISE, SOLD
+        UNKNOWN, ARRIVING, IN_STOCK, PROMISE, SOLD
     }
 
 }

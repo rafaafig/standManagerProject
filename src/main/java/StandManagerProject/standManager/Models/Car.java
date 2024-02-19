@@ -3,6 +3,7 @@ package StandManagerProject.standManager.Models;
 import StandManagerProject.standManager.Enums.CarEnums;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import org.hibernate.sql.results.graph.basic.BasicResultGraphNode;
 
 
 @Entity
@@ -13,9 +14,11 @@ public class Car {
     private Long id;
 
 
-    private String brand;
+    @ManyToOne
+    private Brand brand;
 
-    private String model;
+    @ManyToOne
+    private Model model;
 
     @Nullable
     private int licensePlate;
@@ -43,12 +46,8 @@ public class Car {
 
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "seller_id")
     private Seller seller;
 
-    @ManyToOne
-    @JoinColumn(name = "buyer_id")
-    private Buyer buyer;
 
 
     public Car() {
@@ -60,22 +59,6 @@ public class Car {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
     }
 
     public int getLicensePlate() {
@@ -149,5 +132,22 @@ public class Car {
     public void setSeller(Seller seller) {
         this.seller = seller;
     }
+
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
+    }
+
+    public Model getModel() {
+        return model;
+    }
+
+    public void setModel(Model model) {
+        this.model = model;
+    }
+
 
 }

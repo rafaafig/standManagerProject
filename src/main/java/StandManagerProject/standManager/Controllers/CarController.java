@@ -1,5 +1,8 @@
 package StandManagerProject.standManager.Controllers;
 
+import StandManagerProject.standManager.Converters.CarConverter;
+import StandManagerProject.standManager.Dto.CarDto;
+import StandManagerProject.standManager.Enums.CarEnums;
 import StandManagerProject.standManager.Models.Car;
 import StandManagerProject.standManager.Models.Seller;
 import StandManagerProject.standManager.Services.CarService;
@@ -25,10 +28,10 @@ public class CarController {
     }
 
     @GetMapping
-    public ResponseEntity<List<EntityModel<Car>>> getAllCars() {
+    public ResponseEntity<List<EntityModel<CarDto>>> getAllCars() {
         List<Car> cars = carService.getAllCars();
-        List<EntityModel<Car>> carsModels = cars.stream()
-                .map(car -> EntityModel.of(car,
+        List<EntityModel<CarDto>> carsModels = cars.stream()
+                .map(car -> EntityModel.of(CarConverter.toDto(car),
                         linkTo(methodOn(CarController.class).getCarById(car.getId())).withSelfRel(),
                         linkTo(methodOn(CarController.class).updateCar(car.getId(), car)).withRel("update"),
                         linkTo(methodOn(CarController.class).deleteCar(car.getId())).withRel("delete")))
@@ -37,10 +40,11 @@ public class CarController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EntityModel<Car>> getCarById(@PathVariable Long id) {
+    public ResponseEntity<EntityModel<CarDto>> getCarById(@PathVariable Long id) {
         return carService.getCarById(id)
                 .map(car -> {
-                    EntityModel<Car> model = EntityModel.of(car,
+                    CarDto carDto = CarConverter.toDto(car);
+                    EntityModel<CarDto> model = EntityModel.of(carDto,
                             linkTo(methodOn(CarController.class).getCarById(id)).withSelfRel(),
                             linkTo(methodOn(CarController.class).updateCar(id, car)).withRel("update"),
                             linkTo(methodOn(CarController.class).deleteCar(id)).withRel("delete"));
@@ -71,5 +75,16 @@ public class CarController {
     public ResponseEntity<Void> deleteCar(@PathVariable Long id) {
         carService.deleteCar(id);
         return ResponseEntity.noContent().build();
+    }
+
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<Car> changeCarStatus(@PathVariable Long id, @RequestParam CarEnums.Status newStatus) {
+        Car updatedCar = carService.changeCarStatus(id, newStatus);
+        EntityModel<Car> model = EntityModel.of(updatedCar,
+                linkTo(methodOn(CarController.class).getCarById(id)).withSelfRel(),
+                linkTo(methodOn(CarController.class).updateCar(id, updatedCar)).withRel("update"),
+                linkTo(methodOn(CarController.class).deleteCar(id)).withRel("delete"));
+        return ResponseEntity.ok(updatedCar);
     }
 }

@@ -1,6 +1,7 @@
 package StandManagerProject.standManager.Controllers;
 
-import StandManagerProject.standManager.Models.Car;
+import StandManagerProject.standManager.Converters.SellerConverter;
+import StandManagerProject.standManager.Dto.SellerDto;
 import StandManagerProject.standManager.Models.Seller;
 import StandManagerProject.standManager.Services.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -27,10 +27,10 @@ public class SellerController {
     }
 
     @GetMapping
-    public ResponseEntity<List<EntityModel<Seller>>> getAllSellers() {
+    public ResponseEntity<List<EntityModel<SellerDto>>> getAllSellers() {
         List<Seller> sellers = sellerService.getAllSellers();
-        List<EntityModel<Seller>> sellerModels = sellers.stream()
-                .map(seller -> EntityModel.of(seller,
+        List<EntityModel<SellerDto>> sellerModels = sellers.stream()
+                .map(seller -> EntityModel.of(SellerConverter.toDto(seller),
                         linkTo(methodOn(SellerController.class).getSellerById(seller.getId())).withSelfRel(),
                         linkTo(methodOn(SellerController.class).updateSeller(seller.getId(), seller)).withRel("update"),
                         linkTo(methodOn(SellerController.class).deleteSeller(seller.getId())).withRel("delete")))
@@ -39,10 +39,11 @@ public class SellerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EntityModel<Seller>> getSellerById(@PathVariable Long id) {
+    public ResponseEntity<EntityModel<SellerDto>> getSellerById(@PathVariable Long id) {
         return sellerService.getSellerById(id)
                 .map(seller -> {
-                    EntityModel<Seller> model = EntityModel.of(seller,
+                    SellerDto sellerDto = SellerConverter.toDto(seller);
+                    EntityModel<SellerDto> model = EntityModel.of(sellerDto,
                             linkTo(methodOn(SellerController.class).getSellerById(id)).withSelfRel(),
                             linkTo(methodOn(SellerController.class).updateSeller(id, seller)).withRel("update"),
                             linkTo(methodOn(SellerController.class).deleteSeller(id)).withRel("delete"));
