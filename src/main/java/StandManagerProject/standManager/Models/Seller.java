@@ -18,11 +18,6 @@ public class Seller {
     private int phoneNumber;
 
 
-
-    public Seller() {
-    }
-
-
     public Long getId() {
         return id;
     }

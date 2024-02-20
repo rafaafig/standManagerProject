@@ -2,6 +2,7 @@ package StandManagerProject.standManager.Services;
 
 import StandManagerProject.standManager.Enums.CarEnums;
 import StandManagerProject.standManager.Exceptions.BrandNotFoundException;
+import StandManagerProject.standManager.Exceptions.SellerNotFoundException;
 import StandManagerProject.standManager.Models.Brand;
 import StandManagerProject.standManager.Models.Car;
 import StandManagerProject.standManager.Models.Model;
@@ -43,12 +44,16 @@ public class CarService {
 
         Optional<Model> modelOptional = modelRepository.findById(car.getModel().getId());
 
-        Optional<Seller> sellerOptional = sellerRepository.findById(car.getSeller().getId());
+//        Optional<Seller> sellerOptional = sellerRepository.findById(car.getSeller().getId());
 
         if (!modelOptional.isPresent()) {
 
             throw new BrandNotFoundException("Brand with id " + car.getModel().getBrand().getId() + " not found");
         }
+//        if (!sellerOptional.isPresent()) {
+//
+//            throw new SellerNotFoundException("Brand with id " + car.getModel().getBrand().getId() + " not found");
+//        }
 
         return carRepository.save(car);
     }

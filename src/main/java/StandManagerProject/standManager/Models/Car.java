@@ -41,7 +41,7 @@ public class Car {
     private CarEnums.Status status;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Seller seller;
 
     private Long transactionId;
