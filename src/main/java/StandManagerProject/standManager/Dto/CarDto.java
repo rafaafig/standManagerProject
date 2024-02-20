@@ -12,7 +12,7 @@ import org.springframework.boot.Banner;
 public class CarDto {
 
     Long id;
-    Brand brand;
+
     Model model;
 
     @Enumerated(EnumType.STRING)

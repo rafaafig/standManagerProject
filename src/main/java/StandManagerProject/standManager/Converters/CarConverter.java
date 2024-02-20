@@ -8,7 +8,6 @@ public class CarConverter {
     public static CarDto toDto(Car car) {
         return CarDto.builder()
                 .id(car.getId())
-                .brand(car.getBrand())
                 .model(car.getModel())
                 .traction(car.getTraction())
                 .country(car.getCountry())

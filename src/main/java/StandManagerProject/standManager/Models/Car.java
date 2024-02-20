@@ -13,10 +13,6 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-    @ManyToOne
-    private Brand brand;
-
     @ManyToOne
     private Model model;
 
@@ -48,6 +44,9 @@ public class Car {
     @ManyToOne(cascade = CascadeType.ALL)
     private Seller seller;
 
+    private Long transactionId;
+
+    private Long buyerId;
 
 
     public Car() {
@@ -133,14 +132,6 @@ public class Car {
         this.seller = seller;
     }
 
-    public Brand getBrand() {
-        return brand;
-    }
-
-    public void setBrand(Brand brand) {
-        this.brand = brand;
-    }
-
     public Model getModel() {
         return model;
     }
@@ -148,6 +139,5 @@ public class Car {
     public void setModel(Model model) {
         this.model = model;
     }
-
 
 }

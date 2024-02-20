@@ -78,4 +78,10 @@ public class BrandController {
         brandService.deleteBrand(id);
         return ResponseEntity.noContent().build();
     }
+
+
+    @GetMapping("/withcars")
+    public List<Brand> getBrandsWithCars() {
+        return brandService.getBrandsWithCars();
+    }
 }

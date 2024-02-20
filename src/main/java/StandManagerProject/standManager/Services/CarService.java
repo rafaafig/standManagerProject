@@ -1,8 +1,15 @@
 package StandManagerProject.standManager.Services;
 
 import StandManagerProject.standManager.Enums.CarEnums;
+import StandManagerProject.standManager.Exceptions.BrandNotFoundException;
+import StandManagerProject.standManager.Models.Brand;
 import StandManagerProject.standManager.Models.Car;
+import StandManagerProject.standManager.Models.Model;
+import StandManagerProject.standManager.Models.Seller;
+import StandManagerProject.standManager.Repositories.BrandRepository;
 import StandManagerProject.standManager.Repositories.CarRepository;
+import StandManagerProject.standManager.Repositories.ModelRepository;
+import StandManagerProject.standManager.Repositories.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +21,12 @@ public class CarService {
 
     @Autowired
     private CarRepository carRepository;
+
+    @Autowired
+    private ModelRepository modelRepository;
+
+    @Autowired
+    private SellerRepository sellerRepository;
 
 
     public List<Car> getAllCars() {
@@ -27,6 +40,16 @@ public class CarService {
 
 
     public Car addCar(Car car) {
+
+        Optional<Model> modelOptional = modelRepository.findById(car.getModel().getId());
+
+        Optional<Seller> sellerOptional = sellerRepository.findById(car.getSeller().getId());
+
+        if (!modelOptional.isPresent()) {
+
+            throw new BrandNotFoundException("Brand with id " + car.getModel().getBrand().getId() + " not found");
+        }
+
         return carRepository.save(car);
     }
 
