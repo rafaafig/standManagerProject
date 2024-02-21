@@ -17,4 +17,17 @@ public class CarConverter {
                 .doors(car.getDoors())
                 .build();
     }
+
+    private Car convertToCar(CarDto carDto) {
+        Car car = new Car();
+        car.setId(carDto.getId());
+        car.setModel(carDto.getModel());
+        car.setTraction(carDto.getTraction());
+        car.setCountry(carDto.getCountry());
+        car.setSeats(carDto.getSeats());
+        car.setFuel(carDto.getFuel());
+        car.setType(carDto.getType());
+        car.setDoors(carDto.getDoors());
+        return car;
+    }
 }

@@ -6,9 +6,13 @@ import StandManagerProject.standManager.Models.Model;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.Banner;
 
 @Builder
+@Getter
+@Setter
 public class CarDto {
 
     Long id;

@@ -7,7 +7,6 @@ public class SellerConverter {
 
     public static SellerDto toDto (Seller seller){
         return SellerDto.builder()
-                .id(seller.getId())
                 .name(seller.getName())
                 .build();
     }
