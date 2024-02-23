@@ -1,0 +1,136 @@
+@startuml
+
+class Model {
+    +Long id
+    +String brand
+}
+
+class Brand {
+    +Long id
+    +String name
+}
+
+class Seller {
+    +Long id
+    +String name
+    +String email
+    +String phone
+}
+
+enum CarEnums.Traction {
+    AWD
+    FWD
+    RWD
+    FOUR_WD
+}
+
+enum CarEnums.Country {
+    UNITED_STATES
+    UNITED_KINGDOM
+    CHINA
+    GERMANY
+    FRANCE
+    ITALY
+    SWEDEN
+    JAPAN
+    SPAIN
+    SOUTH_KOREA
+    CZECH_REPUBLIC
+    ROMANIA
+}
+
+enum CarEnums.Seats {
+    UNKNOWN
+    ONE
+    TWO
+    THREE
+    FOUR
+    FIVE
+    SIX
+    SEVEN
+    EIGHT
+    NINE
+}
+
+enum CarEnums.Fuel {
+    BIODIESEL
+    ELECTRICITY
+    ETHANOL
+    HYDROGEN
+    NATURAL_GAS
+    PROPANE
+    RENEWABLE_DIESEL
+    SUSTAINABLE_AVIATION_FUEL
+}
+
+enum CarEnums.Type {
+    QUADRICYCLE
+    A_MINI
+    B_SMALL
+    C_MEDIUM
+    D_LARGE
+    E_EXECUTIVE
+    F_LUXURY
+    J_SPORT_UTILITY
+    M_MULTI_PURPOSE
+    S_SPORTS
+}
+
+enum CarEnums.Doors {
+    UNKNOWN
+    ONE
+    TWO
+    THREE
+    FOUR
+    FIVE
+    SIX
+    SEVEN
+}
+
+enum CarEnums.Status {
+    UNKNOWN
+    ARRIVING
+    IN_STOCK
+    PROMISE
+    SOLD
+}
+
+class CAR {
+    -Long id
+    -Model model
+    -int licensePlate
+    -CarEnums.Traction
+    -CarEnums.Country
+    -CarEnums.Seats
+    -CarEnums.Fuel
+    -CarEnums.Type
+    -CarEnums.Doors
+    -CarEnums.Status
+    -Seller seller
+    -Long buyPrice
+    -Long sellPrice
+}
+
+class Buyer {
+    +Long id
+    +String name
+    +String email
+    +String phone
+}
+
+class Transaction{
+    +Long id
+    +CAR car
+    +Buyer buyer
+    +Long finalPrice
+    +Date date
+}
+
+CAR "1 " -- "0..*" Model
+CAR "*"--- "1 " Seller
+Brand "1 " -- "0..*" Model
+Transaction "1 " -- "1 " CAR
+Transaction "1 " -- "1 " Buyer
+
+
+@enduml

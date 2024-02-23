@@ -79,7 +79,7 @@ public class CarController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<EntityModel<Car>> addCar(@RequestBody Car car) {
         Car savedCar = carService.addCar(car);
         EntityModel<Car> model = EntityModel.of(savedCar,
@@ -116,63 +116,63 @@ public class CarController {
         return ResponseEntity.ok(updatedCar);
     }
 
-    @GetMapping("/available")
-    public CollectionModel<EntityModel<CarDto>> availableCars(@RequestParam(name = "page", defaultValue = "0") int page,
-                                                              @RequestParam(name = "size", defaultValue = "2") int size,
-                                                              @RequestParam(name = "sort", defaultValue = "id") String sort) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
-        Page<Car> carsPage = carService.availableCars(page, size, sort);
-
-        List<EntityModel<CarDto>> carModels = carsPage.getContent().stream()
-                .map(car -> EntityModel.of(CarConverter.toDto(car),
-                        linkTo(methodOn(CarController.class).getCarById(car.getId())).withSelfRel(),
-                        linkTo(methodOn(CarController.class).updateCar(car.getId(), car)).withRel("update"),
-                        linkTo(methodOn(CarController.class).deleteCar(car.getId())).withRel("delete")))
-                .toList();
-
-        List<Link> links = new ArrayList<>();
-        links.add(linkTo(methodOn(CarController.class).availableCars(page, size, sort)).withSelfRel());
-
-        if (carsPage.hasNext()) {
-            Link nextLink = linkTo(methodOn(CarController.class).availableCars(page + 1, size, sort)).withRel("next");
-            links.add(nextLink);
-        }
-        if (carsPage.hasPrevious()) {
-            Link prevLink = linkTo(methodOn(CarController.class).availableCars(page - 1, size, sort)).withRel("previous");
-            links.add(prevLink);
-        }
-
-        return CollectionModel.of(carModels, links);
-    }
-
-    @GetMapping("/sold")
-    public CollectionModel<EntityModel<CarDto>> soldCars(@RequestParam(name = "page", defaultValue = "0") int page,
-                                                              @RequestParam(name = "size", defaultValue = "2") int size,
-                                                              @RequestParam(name = "sort", defaultValue = "id") String sort) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
-        Page<Car> carsPage = carService.soldCars(page, size, sort);
-
-        List<EntityModel<CarDto>> carModels = carsPage.getContent().stream()
-                .map(car -> EntityModel.of(CarConverter.toDto(car),
-                        linkTo(methodOn(CarController.class).getCarById(car.getId())).withSelfRel(),
-                        linkTo(methodOn(CarController.class).updateCar(car.getId(), car)).withRel("update"),
-                        linkTo(methodOn(CarController.class).deleteCar(car.getId())).withRel("delete")))
-                .toList();
-
-        List<Link> links = new ArrayList<>();
-        links.add(linkTo(methodOn(CarController.class).availableCars(page, size, sort)).withSelfRel());
-
-        if (carsPage.hasNext()) {
-            Link nextLink = linkTo(methodOn(CarController.class).availableCars(page + 1, size, sort)).withRel("next");
-            links.add(nextLink);
-        }
-        if (carsPage.hasPrevious()) {
-            Link prevLink = linkTo(methodOn(CarController.class).availableCars(page - 1, size, sort)).withRel("previous");
-            links.add(prevLink);
-        }
-
-        return CollectionModel.of(carModels, links);
-    }
+//    @GetMapping("/available")
+//    public CollectionModel<EntityModel<CarDto>> availableCars(@RequestParam(name = "page", defaultValue = "0") int page,
+//                                                              @RequestParam(name = "size", defaultValue = "2") int size,
+//                                                              @RequestParam(name = "sort", defaultValue = "id") String sort) {
+//        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+//        Page<Car> carsPage = carService.availableCars(page, size, sort);
+//
+//        List<EntityModel<CarDto>> carModels = carsPage.getContent().stream()
+//                .map(car -> EntityModel.of(CarConverter.toDto(car),
+//                        linkTo(methodOn(CarController.class).getCarById(car.getId())).withSelfRel(),
+//                        linkTo(methodOn(CarController.class).updateCar(car.getId(), car)).withRel("update"),
+//                        linkTo(methodOn(CarController.class).deleteCar(car.getId())).withRel("delete")))
+//                .toList();
+//
+//        List<Link> links = new ArrayList<>();
+//        links.add(linkTo(methodOn(CarController.class).availableCars(page, size, sort)).withSelfRel());
+//
+//        if (carsPage.hasNext()) {
+//            Link nextLink = linkTo(methodOn(CarController.class).availableCars(page + 1, size, sort)).withRel("next");
+//            links.add(nextLink);
+//        }
+//        if (carsPage.hasPrevious()) {
+//            Link prevLink = linkTo(methodOn(CarController.class).availableCars(page - 1, size, sort)).withRel("previous");
+//            links.add(prevLink);
+//        }
+//
+//        return CollectionModel.of(carModels, links);
+//    }
+//
+//    @GetMapping("/sold")
+//    public CollectionModel<EntityModel<CarDto>> soldCars(@RequestParam(name = "page", defaultValue = "0") int page,
+//                                                              @RequestParam(name = "size", defaultValue = "2") int size,
+//                                                              @RequestParam(name = "sort", defaultValue = "id") String sort) {
+//        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+//        Page<Car> carsPage = carService.soldCars(page, size, sort);
+//
+//        List<EntityModel<CarDto>> carModels = carsPage.getContent().stream()
+//                .map(car -> EntityModel.of(CarConverter.toDto(car),
+//                        linkTo(methodOn(CarController.class).getCarById(car.getId())).withSelfRel(),
+//                        linkTo(methodOn(CarController.class).updateCar(car.getId(), car)).withRel("update"),
+//                        linkTo(methodOn(CarController.class).deleteCar(car.getId())).withRel("delete")))
+//                .toList();
+//
+//        List<Link> links = new ArrayList<>();
+//        links.add(linkTo(methodOn(CarController.class).availableCars(page, size, sort)).withSelfRel());
+//
+//        if (carsPage.hasNext()) {
+//            Link nextLink = linkTo(methodOn(CarController.class).availableCars(page + 1, size, sort)).withRel("next");
+//            links.add(nextLink);
+//        }
+//        if (carsPage.hasPrevious()) {
+//            Link prevLink = linkTo(methodOn(CarController.class).availableCars(page - 1, size, sort)).withRel("previous");
+//            links.add(prevLink);
+//        }
+//
+//        return CollectionModel.of(carModels, links);
+//    }
 
     //carService.markCarAsSold(carId);
     @PutMapping("/{id}/sold")

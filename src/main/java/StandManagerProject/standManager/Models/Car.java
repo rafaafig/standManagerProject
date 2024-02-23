@@ -3,10 +3,14 @@ package StandManagerProject.standManager.Models;
 import StandManagerProject.standManager.Enums.CarEnums;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.hibernate.sql.results.graph.basic.BasicResultGraphNode;
 
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Car {
 
     @Id
@@ -16,8 +20,9 @@ public class Car {
     @ManyToOne
     private Model model;
 
-    @Nullable
-    private int licensePlate;
+    private String licensePlate;
+
+    private double kilometers;
 
     @Enumerated(EnumType.STRING)
     private CarEnums.Traction traction;
@@ -44,13 +49,10 @@ public class Car {
     @ManyToOne
     private Seller seller;
 
-    private Long transactionId;
+    private Long buyPrice;
 
-    private Long buyerId;
+    private Long sellPrice;
 
-
-    public Car() {
-    }
 
     public Long getId() {
         return id;
@@ -58,14 +60,6 @@ public class Car {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public int getLicensePlate() {
-        return licensePlate;
-    }
-
-    public void setLicensePlate(int licensePlate) {
-        this.licensePlate = licensePlate;
     }
 
     public CarEnums.Traction getTraction() {
@@ -140,4 +134,35 @@ public class Car {
         this.model = model;
     }
 
+    public Long getBuyPrice() {
+        return buyPrice;
+    }
+
+    public void setBuyPrice(Long buyPrice) {
+        this.buyPrice = buyPrice;
+    }
+
+    public Long getSellPrice() {
+        return sellPrice;
+    }
+
+    public void setSellPrice(Long sellPrice) {
+        this.sellPrice = sellPrice;
+    }
+
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
+    }
+
+    public double getKilometers() {
+        return kilometers;
+    }
+
+    public void setKilometers(double kilometers) {
+        this.kilometers = kilometers;
+    }
 }

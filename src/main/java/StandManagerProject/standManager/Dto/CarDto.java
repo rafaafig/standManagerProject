@@ -5,19 +5,19 @@ import StandManagerProject.standManager.Models.Brand;
 import StandManagerProject.standManager.Models.Model;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.boot.Banner;
 
 @Builder
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CarDto {
 
-    Long id;
-
     Model model;
+
+    String licensePlate;
 
     @Enumerated(EnumType.STRING)
     CarEnums.Traction traction;
@@ -36,5 +36,8 @@ public class CarDto {
 
     @Enumerated(EnumType.STRING)
     CarEnums.Doors doors;
+
+    @Enumerated(EnumType.STRING)
+    CarEnums.Status status;
 
 }

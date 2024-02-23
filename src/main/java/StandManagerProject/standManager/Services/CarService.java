@@ -4,8 +4,10 @@ import StandManagerProject.standManager.Converters.CarConverter;
 import StandManagerProject.standManager.Dto.CarDto;
 import StandManagerProject.standManager.Enums.CarEnums;
 import StandManagerProject.standManager.Exceptions.BrandNotFoundException;
+import StandManagerProject.standManager.Exceptions.SellerNotFoundException;
 import StandManagerProject.standManager.Models.Car;
 import StandManagerProject.standManager.Models.Model;
+import StandManagerProject.standManager.Models.Seller;
 import StandManagerProject.standManager.Repositories.CarRepository;
 import StandManagerProject.standManager.Repositories.ModelRepository;
 import StandManagerProject.standManager.Repositories.SellerRepository;
@@ -43,9 +45,9 @@ public class CarService {
 
     public Car addCar(Car car) {
 
-        Optional<Model> modelOptional = modelRepository.findById(car.getModel().getId());
+      Optional<Model> modelOptional = modelRepository.findById(car.getModel().getId());
 
-//        Optional<Seller> sellerOptional = sellerRepository.findById(car.getSeller().getId());
+//      Optional<Seller> sellerOptional = sellerRepository.findById(car.getSeller().getId());
 
         if (!modelOptional.isPresent()) {
 
@@ -53,7 +55,7 @@ public class CarService {
         }
 //        if (!sellerOptional.isPresent()) {
 //
-//            throw new SellerNotFoundException("Brand with id " + car.getModel().getBrand().getId() + " not found");
+//           throw new SellerNotFoundException("Brand with id " + car.getModel().getBrand().getId() + " not found");
 //        }
 
         return carRepository.save(car);
@@ -81,14 +83,16 @@ public class CarService {
         return carRepository.save(car);
     }
 
-    public Page<Car> availableCars(int page, int size, String sort){
-        return carRepository.findCarsByStatus(CarEnums.Status.IN_STOCK.toString(), PageRequest.of(page, size, Sort.by(sort)));
-    }
+//    public Page<Car> availableCars(int page, int size, String sort){
+//        return carRepository.findCarsByStatus(CarEnums.Status.IN_STOCK.toString(), PageRequest.of(page, size, Sort.by(sort)));
+//    }
+//
+//    public Page<Car> soldCars(int page, int size, String sort){
+//        return carRepository.findCarsByStatus(CarEnums.Status.SOLD.toString(), PageRequest.of(page, size, Sort.by(sort)));
+//    }
 
-    public Page<Car> soldCars(int page, int size, String sort){
-        return carRepository.findCarsByStatus(CarEnums.Status.SOLD.toString(), PageRequest.of(page, size, Sort.by(sort)));
-    }
 
+    //also get sale price-
     public Car markCarAsSold(Long carId) {
         Car car = carRepository.findById(carId)
                 .orElseThrow(() -> new RuntimeException("Car not found with id: " + carId));
